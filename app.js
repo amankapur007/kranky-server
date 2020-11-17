@@ -32,10 +32,9 @@ if ('development' == app.get('env')) {
 // routing
 require('./app/routes.js')(app, streams);
 
-const port = process.env.port || 3000;
 
-var server = app.listen(port, function(){
-  console.log('Express server listening on port ' + port);
+var server = app.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
 
 var io = require('socket.io').listen(server);
