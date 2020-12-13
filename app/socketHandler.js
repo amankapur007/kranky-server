@@ -5,7 +5,7 @@ module.exports = function(io, streams) {
     client.emit('id', client.id);
 
     client.on('message', function (details) {
-      var otherClient = io.sockets.connected[details.to];
+      var otherClient = io.sockets.sockets.get(details.to);
 
       if (!otherClient) {
         return;
@@ -14,7 +14,19 @@ module.exports = function(io, streams) {
         details.from = client.id;
         otherClient.emit('message', details);
     });
+  
+    client.on('mouseEvents', function (details) {
+      console.log('-- Message --',details);
       
+      var otherClient = io.sockets.sockets.get(details.to);
+      if (!otherClient) {
+        return;
+      }
+        delete details.to;
+        details.from = client.id;
+        otherClient.emit('mouseEvents', details);
+    });
+    
     client.on('readyToStream', function(options) {
       console.log('-- ' + client.id + ' is ready to stream --');
       

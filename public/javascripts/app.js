@@ -45,7 +45,9 @@
 		return camera;
     }]);
 
+
 	app.controller('RemoteStreamsController', ['camera', '$location', '$http', function(camera, $location, $http){
+		var socket = io();
 		var rtc = this;
 		rtc.remoteStreams = [];
 		function getStreamById(id) {
@@ -108,6 +110,51 @@
 			}
 		};
 
+	  
+		function getRemoteStreamById() {
+            for(var i=0; i<rtc.remoteStreams.length;i++) {
+                if (rtc.remoteStreams[i].isPlaying){
+                    remoteId = rtc.remoteStreams[i].id;
+                    console.log('remoteId  ',remoteId);
+                    break;
+                }
+            }
+		}
+		
+        var isDrawing = false;
+        remoteVideosContainer.addEventListener('mousedown', e => {
+            console.log('SUCCESSS');
+            getRemoteStreamById();
+            x = e.offsetX;
+            y = e.offsetY;
+            isDrawing = true;
+            // console.log('x,y    ',x + ","+y);
+            socket.emit('mouseEvents',{'x':x,'y':y,'action':'mousedown','to':remoteId,'from':client.getId()});
+            
+          });
+          remoteVideosContainer.addEventListener('mousemove', e => {
+              if(isDrawing){
+                console.log('SUCCESSS');
+                x = e.offsetX;
+                y = e.offsetY;
+                console.log('x,y    ',x + ","+y);
+                socket.emit('chat message',{'x':x,'y':y,'action':'mousemove'});
+              }
+
+            
+          });
+          remoteVideosContainer.addEventListener('mouseup', e => {
+            if(isDrawing){
+              console.log('SUCCESSS');
+              x = e.offsetX;
+              y = e.offsetY;
+              isDrawing = false;
+              console.log('x,y    ',x + ","+y);
+              socket.emit('chat message',{'x':x,'y':y,'action':'mouseup'});
+            }
+
+          
+        });
 		//initial load
 		rtc.loadData();
     	if($location.url() != '/'){
