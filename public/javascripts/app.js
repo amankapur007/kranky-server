@@ -45,9 +45,7 @@
 		return camera;
     }]);
 
-
 	app.controller('RemoteStreamsController', ['camera', '$location', '$http', function(camera, $location, $http){
-		var socket = io();
 		var rtc = this;
 		rtc.remoteStreams = [];
 		function getStreamById(id) {
@@ -110,57 +108,6 @@
 			}
 		};
 
-	  var remoteId;
-		function getRemoteStreamById() {
-            for(var i=0; i<rtc.remoteStreams.length;i++) {
-                if (rtc.remoteStreams[i].isPlaying){
-                    remoteId = rtc.remoteStreams[i].id;
-                    console.log('remoteId  ',remoteId);
-                    break;
-                }
-            }
-		}
-		
-		var isDrawing = false;
-		//remoteVideoContainer = document.body;
-        remoteVideosContainer.addEventListener('mousedown', e => {
-            console.log('SUCCESSS');
-            getRemoteStreamById();
-            x = e.pageX;
-            y = e.pageY;
-            isDrawing = true;
-            // console.log('x,y    ',x + ","+y);
-            socket.emit('mouseEvents',{'x':x,'y':y,'action':'mousedown','to':remoteId,'from':client.getId()});
-            
-          });
-          remoteVideosContainer.addEventListener('mousemove', e => {
-              if(isDrawing){
-                console.log('SUCCESSS');
-				x = e.pageX;
-				y = e.pageY;
-					console.log('x,y    ',x + ","+y);
-				socket.emit('mouseEvents',{'x':x,'y':y,'action':'mousemove','to':remoteId,'from':client.getId()});
-			}
-
-            
-          });
-          remoteVideosContainer.addEventListener('mouseup', e => {
-            if(isDrawing){
-              console.log('SUCCESSS');
-			  x = e.pageX;
-			  y = e.pageY;
-				isDrawing = false;
-			  console.log('x,y    ',x + ","+y);
-			  //socket.emit('mouseEvents',{'x':1353.4478,'y':411.4288,'action':'mousemove','to':remoteId,'from':client.getId(),eventTime:97185539, downTime:97185515});
-			  //socket.emit('mouseEvents',{'x':1352.2516,'y':409.86432,'action':'mousemove','to':remoteId,'from':client.getId(),eventTime:97185555, downTime:97185515});
-			  //socket.emit('mouseEvents',{'x':1351.0997,'y':408.78815,'action':'mousemove','to':remoteId,'from':client.getId(),eventTime:97185572, downTime:97185515});
-			  //socket.emit('mouseEvents',{'x':1349.909,'y':407.9403,'action':'mousemove','to':remoteId,'from':client.getId(),eventTime:97185588, downTime:97185515});
-			  //socket.emit('mouseEvents',{'x':1349.5273,'y':407.76855,'action':'mousemove','to':remoteId,'from':client.getId(),eventTime:97185594, downTime:97185515});
-			  socket.emit('mouseEvents',{'x':x,'y':y,'action':'mouseup','to':remoteId,'from':client.getId()});
-            }
-
-          
-        });
 		//initial load
 		rtc.loadData();
     	if($location.url() != '/'){
