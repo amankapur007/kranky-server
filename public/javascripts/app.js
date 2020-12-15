@@ -22,12 +22,13 @@
 			})
 			.catch(Error('Failed to get access to local media.'));
 		};
-		
     	camera.stop = function(){
     		return new Promise(function(resolve, reject){			
 				try {
 					//camera.stream.stop() no longer works
-					camera.stream.getTracks().forEach(function (track) {​​ track.stop(); }​​);
+          for( var i =0;i<camera.stream.getTracks().length;i++ ){
+            camera.stream.getTracks()[i].stop();
+          }
 					camera.preview.src = '';
 					resolve();
 				} catch(error) {
