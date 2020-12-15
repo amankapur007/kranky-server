@@ -27,7 +27,7 @@
     		return new Promise(function(resolve, reject){			
 				try {
 					//camera.stream.stop() no longer works
-         			camera.stream.getTracks().forEach(function (track) {​​ track.stop(); }​​);
+					camera.stream.getTracks().forEach(function (track) {​​ track.stop(); }​​);
 					camera.preview.src = '';
 					resolve();
 				} catch(error) {
