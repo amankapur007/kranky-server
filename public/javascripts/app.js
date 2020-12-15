@@ -5,10 +5,7 @@
 	var client = new PeerManager();
 	var mediaConfig = {
         audio:true,
-        video: {
-			mandatory: {},
-			optional: []
-        }
+        video: false
     };
 
     app.factory('camera', ['$rootScope', '$window', function($rootScope, $window){
