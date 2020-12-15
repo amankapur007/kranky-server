@@ -167,7 +167,7 @@
 
 	app.controller('LocalStreamController',['camera', '$scope', '$window', function(camera, $scope, $window){
 		var localStream = this;
-		localStream.name = 'Guest';
+		localStream.name = '';
 		localStream.link = '';
 		localStream.cameraIsOn = false;
 
